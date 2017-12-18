@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class RemovePrefix extends Command
 {
@@ -45,9 +46,15 @@ class RemovePrefix extends Command
                 if (substr($oldTableName, 0, strlen($prefix)) == $prefix) {
                     $newTableName = substr($oldTableName, strlen($prefix));
 
-                    $query = "RENAME TABLE $oldTableName TO $newTableName";
-                    DB::statement($query);
-                    echo $query . PHP_EOL;
+                    if(Schema::hasTable($newTableName)){
+                        $this->warn("TABLE $newTableName existed");
+                    }
+                    else{
+                        $query = "RENAME TABLE $oldTableName TO $newTableName";
+                        $this->info($query);
+                        DB::statement($query);
+                    }
+
                 }
         }
 
