@@ -46,15 +46,17 @@ class RemovePrefix extends Command
                 if (substr($oldTableName, 0, strlen($prefix)) == $prefix) {
                     $newTableName = substr($oldTableName, strlen($prefix));
 
-                    if(Schema::hasTable($newTableName)){
+                    if (Schema::hasTable($newTableName)) {
                         $this->warn("TABLE $newTableName existed");
-                    }
-                    else{
-                        $query = "RENAME TABLE $oldTableName TO $newTableName";
+                        $newTableNameBK = $newTableName . "_bk";
+                        $query = "RENAME TABLE $newTableName TO $newTableNameBK";
                         $this->info($query);
                         DB::statement($query);
                     }
 
+                    $query = "RENAME TABLE $oldTableName TO $newTableName";
+                    $this->info($query);
+                    DB::statement($query);
                 }
         }
 
