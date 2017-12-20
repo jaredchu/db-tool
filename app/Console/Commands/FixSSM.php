@@ -42,7 +42,7 @@ class FixSSM extends Command
         $prefix = $this->argument('prefix');
         $salesSequences = SalesSequenceMeta::all();
         foreach ($salesSequences as $object){
-            if (substr($salesSequences->sequence_table, 0, strlen($prefix)) == $prefix){
+            if (substr($object->sequence_table, 0, strlen($prefix)) == $prefix){
                 $oldValue = $object->sequence_table;
                 $object->sequence_table = substr($object->sequence_table, strlen($prefix));
                 $this->info(strtr("Change sequence_table value from :from to :to",[
