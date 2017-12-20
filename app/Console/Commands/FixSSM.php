@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\SalesSequenceMeta;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -39,7 +40,7 @@ class FixSSM extends Command
     public function handle()
     {
         $prefix = $this->argument('prefix');
-        $salesSequences = DB::table('sales_sequence_meta')->select('meta_id', 'sequence_table')->get();
+        $salesSequences = SalesSequenceMeta::all();
         foreach ($salesSequences as $object){
             if (substr($salesSequences->sequence_table, 0, strlen($prefix)) == $prefix){
                 $oldValue = $object->sequence_table;
