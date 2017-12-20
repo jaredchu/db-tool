@@ -39,7 +39,7 @@ class FixSSM extends Command
     public function handle()
     {
         $prefix = $this->argument('prefix');
-        $salesSequences = DB::table('sales_sequence_meta')->select('id', 'sequence_table')->get();
+        $salesSequences = DB::table('sales_sequence_meta')->select('meta_id', 'sequence_table')->get();
         foreach ($salesSequences as $object){
             if (substr($salesSequences->sequence_table, 0, strlen($prefix)) == $prefix){
                 $oldValue = $object->sequence_table;
